@@ -13,7 +13,7 @@ import ImagePopup from './ImagePopup.js';
 import Footer from './Footer.js';
 import { useState, useEffect, memo } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import api from '../utils/api.js';
 import * as auth from '../utils/auth.js';
 import ProtectedRouteElement from './ProtectedRoute.js';
@@ -217,11 +217,22 @@ const App = memo(() => {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
-        <SideBar email={email} onSignOut={onSignOut} isOpen={isSideBarOpen} />
-        <Header loggedIn={loggedIn} email={email} isOpen={isSideBarOpen} onSignOut={onSignOut} onOpen={openSideBar} onClose={closeSideBar} />
+        <SideBar
+          email={email}
+          onSignOut={onSignOut}
+          isOpen={isSideBarOpen}
+        />
+        <Header
+          loggedIn={loggedIn}
+          email={email}
+          isOpen={isSideBarOpen}
+          onSignOut={onSignOut}
+          onOpen={openSideBar}
+          onClose={closeSideBar}
+        />
         <Routes>
-          {/* <Route path="/" element={loggedIn ? <Navigate to="/mesto-react" replace /> : <Navigate to="/sign-in" replace />} /> */}
-          <Route path="/" element={<ProtectedRouteElement
+          <Route path="/" element={loggedIn ? <Navigate to="/react-mesto-auth" replace /> : <Navigate to="/sign-in" replace />} />
+          <Route path="/react-mesto-auth" element={<ProtectedRouteElement
             element={Main}
             onEditProfile={handleEditProfileClick} 
             onAddPlace={handleAddPlaceClick} 
