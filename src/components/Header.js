@@ -7,13 +7,12 @@ function Header(props) {
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    }
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [width])
-
-  function handleResize() {
-    setWidth(window.innerWidth);
-  }
 
   function checkWidth() {
     if (width <= 620) {
@@ -23,7 +22,7 @@ function Header(props) {
           <button className="header__button header__button_close" onClick={props.onClose} />
       )
     } else {
-      props.onClose();
+      setTimeout(() => {props.onClose()}, 0);
       return(
         <div className="header__container">
           <p className="header__user-email">{props.email}</p>

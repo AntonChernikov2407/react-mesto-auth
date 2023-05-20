@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, forwardRef } from "react";
+import { useState, useEffect, forwardRef } from "react";
 
 const InputWithValidation = forwardRef((props, ref) => {
 

@@ -18,7 +18,9 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers
     })
-    .then(res => this._getResponseData(res));
+    .then(res => this._getResponseData(res))
+    .then(info => info)
+    .catch(err => console.log(err));
   }
 
   patchUserInfo({name, about}) { // Запрос на обновление информации о пользователе
@@ -30,14 +32,30 @@ class Api {
         about: about
       })
     })
-    .then(res => this._getResponseData(res));
+    .then(res => this._getResponseData(res))
   }
 
   getInitialCards() { // Запрос на получение всех карточек
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers
     })
-    .then(res => this._getResponseData(res));
+    .then(res => this._getResponseData(res))
+    .then((data) => {
+      const result = data.map((card) => ({
+        id: card._id,
+        name: card.name,
+        link: card.link,
+        likes: card.likes,
+        owner: card.owner
+      }));
+      return result;
+    })
+    .catch(err => console.log(err));
+  }
+
+  getAllInfo() {
+    return Promise.all([this.getUserInfo(), this.getInitialCards()])
+      .then(res => res);
   }
 
   postNewCard({name, link}) { // Запрос на добавление новой карточки

@@ -1,6 +1,16 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
 const InfoToolTip = memo((props) => {
+
+  useEffect(() => {
+    const close = (evt) => {
+      if (evt.key === 'Escape') {
+        props.onClose();
+      }
+    }
+    window.addEventListener('keydown', close)
+    return () => window.removeEventListener('keydown', close)
+  }, [])
 
   return(
     <div className={`popup popup_type_info-tool-tip popup_theme_light ${props.isOpen && "popup_opened"}`}>

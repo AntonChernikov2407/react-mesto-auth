@@ -37,11 +37,10 @@ const Login = memo((props) => {
     } else {
       auth.authorize(email, password)
         .then((data) => {
-          // console.log(data);
           if (data.token) {
             setEmail('');
             setPassword('');
-            props.onLogin();
+            props.onLogin(data.token);
             navigate('/', {replace: true});
           }
         })

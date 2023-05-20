@@ -1,6 +1,17 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
 const ImagePopup = memo(({card, isOpen, onClose}) => {
+
+  useEffect(() => {
+    const close = (evt) => {
+      if (evt.key === 'Escape') {
+        onClose();
+      }
+    }
+    window.addEventListener('keydown', close)
+    return () => window.removeEventListener('keydown', close)
+  }, [])
+
   if (card) {
     return (
       <div className={`popup popup_type_zoom-image popup_theme_dark ${isOpen ? "popup_opened" : ""}`}>

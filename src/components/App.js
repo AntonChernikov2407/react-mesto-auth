@@ -37,36 +37,12 @@ const App = memo(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.getUserInfo()
-      .then((info) => {
+    api.getAllInfo()
+      .then((res) => {
+        const [info, cardsArray] = res;
         setCurrentUser(info);
-      })
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    api.getInitialCards()
-      .then((data) => {
-        const result = data.map((card) => ({
-          id: card._id,
-          name: card.name,
-          link: card.link,
-          likes: card.likes,
-          owner: card.owner
-        }));
-        setCards(result);
-      })
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    const close = (evt) => {
-      if (evt.key === 'Escape') {
-        closeAllPopups();
-      }
-    }
-    window.addEventListener('keydown', close)
-    return () => window.removeEventListener('keydown', close)
+        setCards(cardsArray);
+      });
   }, [])
 
   useEffect(() => {
@@ -74,8 +50,7 @@ const App = memo(() => {
   }, [loggedIn]) 
 
   function tokenCheck() {
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('jwt');
       if (jwt) {
         auth.getContent(jwt)
           .then((res) => {
@@ -84,13 +59,9 @@ const App = memo(() => {
               setLoggedIn(true);
               navigate('/', {replace: true});
             }
-            return;
           })
           .catch(err => console.log(err));
       }
-      return;
-    }
-    return;
   }
 
   function handleCardLike(card) {
@@ -166,8 +137,9 @@ const App = memo(() => {
     setIsSideBarOpen(false);
   }
 
-  function onLogin() {
+  function onLogin(token) {
     setLoggedIn(true);
+    localStorage.setItem('jwt', token);
   }
 
   function onRegister(value) {
